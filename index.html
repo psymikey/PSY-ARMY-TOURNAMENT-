@@ -143,14 +143,51 @@
   </div>
 
   <script>
-    document.getElementById("tournamentForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+document.getElementById("tournamentForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-      alert("Application submitted successfully! 🔥");
+  const button = this.querySelector("button");
+  button.disabled = true;
+  button.textContent = "⏳ SUBMITTING...";
 
+  const data = {
+    team: document.getElementById("team").value,
+    captain: document.getElementById("captain").value,
+    uid: document.getElementById("uid").value,
+    phone: document.getElementById("phone").value,
+    game: document.getElementById("game").value
+  };
+
+  try {
+    const response = await fetch(
+      "https://psy-tournament.sa9043108714.workers.dev",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      }
+    );
+
+    const result = await response.json();
+
+    if (result.success) {
+      alert("✅ APPLICATION SUBMITTED SUCCESSFULLY! 🔥");
       this.reset();
-    });
+    } else {
+      alert("❌ Application failed. Please try again.");
+    }
+
+  } catch (error) {
+    alert("❌ Something went wrong. Please try again.");
+  }
+
+  button.disabled = false;
+  button.textContent = "🔥 APPLY NOW";
+});
   </script>
+    document.getElementById("tournamentForm").addEventListener("submit", function(e
 
 </body>
 </html>
